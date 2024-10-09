@@ -63,7 +63,7 @@ struct MainComicsListView: View {
                 Color.init(hex: "#e23636")!
             )
             .onAppear {
-                viewModel.fetchComics(offset: 0, limit: 20)
+                viewModel.fetchComics(offset: 0, limit: 50)
             }
             .onTapGesture {
                 hideKeyboard()

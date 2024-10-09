@@ -66,7 +66,6 @@ class DetailsViewModel: ObservableObject {
                 self.comicDetail = comic
                 self.fetchAllVariants(variants: comic.variants ?? [], completion: { response in })
                 self.fetchCreatorDetail(resourceURI: comic.creators?.collectionURI ?? "")
-                print("-----------------\(comic)-------------------")
             })
             .store(in: &cancellables)  // Store the subscription to avoid memory leaks
     }

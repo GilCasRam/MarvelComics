@@ -18,7 +18,7 @@ class ComicsListViewModel: ObservableObject {
     private let marvelService: MarvelService
     private var cancellables = Set<AnyCancellable>()
     private var currentOffset: Int = 0
-    private let limit = 20
+    private let limit = 50
     private var totalComics: Int = 0
     let columns = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
     
