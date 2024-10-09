@@ -26,76 +26,100 @@ struct PersistenceController {
         container.viewContext.automaticallyMergesChangesFromParent = true
     }
     
-    // Métodos para manejar los cómics en CoreData
+    /// Saves a comic to Core Data.
+    ///
+    /// This method creates a new `ComicEntity` instance in the Core Data context,
+    /// assigns the values from the `Comic` object, and attempts to save the context.
+    ///
+    /// - Parameters:
+    ///   - comic: The `Comic` object containing the comic details to be saved.
     func saveComic(_ comic: Comic) {
-        let context = container.viewContext
+        let context = container.viewContext  // Get the Core Data context.
         let entity = ComicEntity(context: context)
         
-        // Asignar valores
         entity.title = comic.title
         entity.comicDescription = comic.description
         entity.thumbnailURL = comic.thumbnail.url?.absoluteString
-        entity.id = Int64(comic.id)  // Convertir Int a Int64 para CoreData
-        
-        // Guardar el contexto
+        entity.id = Int64(comic.id)
+        // Save the context to persist the comic in Core Data.
         do {
             try context.save()
-            print("Cómic guardado correctamente.")
+            print("Comic saved successfully.")
         } catch {
-            print("Error al guardar el cómic: \(error)")
+            print("Error saving the comic: \(error)")
         }
     }
     
+    /// Loads all comics from Core Data and returns them as an array of `Comic` objects.
+    ///
+    /// This method fetches all `ComicEntity` records from Core Data, converts each entity to a `Comic` object,
+    /// and returns the resulting list. If an error occurs during the fetch operation, it logs the error and returns an empty array.
+    ///
+    /// - Returns: An array of `Comic` objects retrieved from Core Data, or an empty array if an error occurs.
     func loadComics() -> [Comic] {
-        let context = container.viewContext
+        let context = container.viewContext  // Get the Core Data context.
         let fetchRequest: NSFetchRequest<ComicEntity> = ComicEntity.fetchRequest()
         
         do {
             let comicEntities = try context.fetch(fetchRequest)
-            return comicEntities.map { comicFromEntity($0) }  // Convertimos ComicEntity a Comic
+            return comicEntities.map { comicFromEntity($0) }
+            
         } catch {
-            print("Error al cargar los cómics: \(error)")
+            print("Error loading comics: \(error)")
             return []
         }
     }
     
+    /// Deletes a specific comic from Core Data.
+    ///
+    /// This method deletes the given `ComicEntity` from the Core Data context and attempts to save the changes.
+    /// If the deletion is successful, a confirmation message is printed; otherwise, an error message is logged.
+    ///
+    /// - Parameters:
+    ///   - comicEntity: The `ComicEntity` object to be deleted from Core Data.
     func deleteComic(_ comicEntity: ComicEntity) {
-        let context = container.viewContext
+        let context = container.viewContext  // Get the Core Data context.
         context.delete(comicEntity)
-        
-        // Guardar los cambios
         do {
-            try context.save()
-            print("Cómic eliminado correctamente.")
+            try context.save()  // Try to save the context after the deletion.
         } catch {
-            print("Error al eliminar el cómic: \(error)")
+            print("Error deleting the comic: \(error)")
         }
     }
     
-    // Método para convertir ComicEntity a Comic
+    /// Converts a `ComicEntity` from Core Data into a `Comic` object.
+    ///
+    /// This method extracts the necessary properties from the `ComicEntity`, constructs a `Comic` object,
+    /// and handles missing or default values for properties like the thumbnail, variants, and creators.
+    ///
+    /// - Parameters:
+    ///   - entity: The `ComicEntity` object retrieved from Core Data.
+    /// - Returns: A `Comic` object created from the `ComicEntity` properties.
     func comicFromEntity(_ entity: ComicEntity) -> Comic {
-        // Manejo de la URL del thumbnail
+        // Handle the URL for the thumbnail (if it exists).
         let thumbnailPath = entity.thumbnailURL ?? ""
         let thumbnailComponents = URL(string: thumbnailPath)
         
-        // Creación del thumbnail
+        // Create the `Thumbnail` object, handling both the path and extension.
         let thumbnail = Comic.Thumbnail(
             path: thumbnailComponents?.deletingLastPathComponent().absoluteString ?? "",
             extension: thumbnailComponents?.pathExtension ?? "jpg"
         )
         
-        // Manejo de variants y creators
-        let variants: [ComicSummary] = []  // Si no tienes variantes en la entidad, puedes dejarlo como una lista vacía
-        let creators: CreatorList = CreatorList(available: Int(), collectionURI: String(), items: [])  // Si no tienes creadores, lo mismo
+        // Handle comic variants (optional, can be an empty list if not stored in the entity).
+        let variants: [ComicSummary] = []
         
+        // Handle creators (optional, can be default values if not stored in the entity).
+        let creators: CreatorList = CreatorList(available: Int(), collectionURI: String(), items: [])
+        
+        // Return the fully constructed `Comic` object, using default values where necessary.
         return Comic(
             id: Int(entity.id),
-            title: entity.title ?? "Sin título",
-            description: entity.comicDescription ?? "Sin descripción",
+            title: entity.title ?? "No title",
+            description: entity.comicDescription ?? "No description",
             thumbnail: thumbnail,
-            variants: variants,  // Proporcionar la lista de variantes
-            creators: creators   // Proporcionar la lista de creadores
+            variants: variants,
+            creators: creators
         )
-    }
-}
+    }}
 

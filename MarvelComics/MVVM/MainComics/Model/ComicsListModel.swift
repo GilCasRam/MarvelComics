@@ -7,7 +7,7 @@
 
 import Foundation
 
-// Respuesta de la API
+// API Response
 struct MarvelResponse: Codable {
     let data: ComicDataWrapper
 }
@@ -16,8 +16,8 @@ struct ComicDataWrapper: Codable {
     let results: [Comic]
 }
 
-// Estructura principal del cómic
-struct Comic: Codable, Identifiable {
+// Main structure of the comic
+struct Comic: Codable, Identifiable, Equatable {
     let id: Int
     let title: String
     let description: String?
@@ -25,10 +25,10 @@ struct Comic: Codable, Identifiable {
     let variants: [ComicSummary]?
     let creators: CreatorList?
     
-    struct Thumbnail: Codable {
+    struct Thumbnail: Codable, Equatable {
         let path: String
         let `extension`: String
-
+        
         var url: URL? {
             let securePath = path.replacingOccurrences(of: "http:", with: "https:")
             return URL(string: "\(securePath).\(`extension`)")
@@ -36,24 +36,24 @@ struct Comic: Codable, Identifiable {
     }
 }
 
-// Estructura para la lista de creadores
-struct CreatorList: Codable {
+// Structure for the list of creators
+struct CreatorList: Codable, Equatable{
     let available: Int?
     let collectionURI: String?
     let items: [CreatorSummary]?
 }
 
-// Información básica del creador
-struct CreatorSummary: Codable {
-// Usamos el `resourceURI` como identificador único, si está disponible
+// Basic information about the creator
+struct CreatorSummary: Codable, Equatable {
+    // We use the `resourceURI` as a unique identifier, if available.
     var id: String { resourceURI ?? UUID().uuidString }
     let resourceURI: String?
     let name: String?
     let role: String?
 }
 
-// Estructura para las variantes del cómic
-struct ComicSummary: Codable {
+// Structure for comic variants
+struct ComicSummary: Codable, Equatable {
     var id: String { resourceURI ?? UUID().uuidString }
     let resourceURI: String?
     let name: String?

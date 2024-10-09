@@ -8,36 +8,30 @@
 import SwiftUI
 
 struct MainComicsListView: View {
-    @StateObject var viewModel = ComicsListViewModel()
-    let columns = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
+    @StateObject private var viewModel = ComicsListViewModel()
     var body: some View {
         NavigationStack {
             VStack {
-                // Campo de búsqueda
-                SearchBarCustomV2(textToSearch: $viewModel.searchQuery)
-                // Vista de carga
-                if viewModel.isLoading {
-                    VStack{
-                        Spacer()
-                        ProgressView("Loading Comics...")
-                            .padding()
-                        Spacer()
-                    }
-                } else {
-                    // Lista de cómics en formato de cuadrícula
-                    ScrollView {
-                        LazyVGrid(columns: columns, spacing: 16) {
-                            ForEach(viewModel.filteredComics, id: \.id) { comic in
-                                NavigationLink(destination: ComicDetailView(comic: comic)) {
-                                    ComicItemView(comic: comic)
-                                }
+                // Search field
+                SearchBarCustom(textToSearch: $viewModel.searchQuery)
+                // List of comics in grid format
+                ScrollView {
+                    LazyVGrid(columns: viewModel.columns, spacing: 16) {
+                        ForEach(viewModel.filteredComics.indices, id: \.self) { index in
+                            let comic = viewModel.comics[index]
+                            NavigationLink(destination: ComicDetailView(comic: comic)) {
+                                ComicItemView(comic: comic)                                    
+                                    .onAppear{
+                                        if comic == viewModel.comics.last {
+                                            viewModel.fetchMoreComics()
+                                        }
+                                    }
                             }
                         }
-                        .padding()
                     }
+                    .padding()
                 }
-
-                // Botón para favoritos
+                // Favorites button
                 NavigationLink(destination: {
                     FavoritesView()
                 }) {
@@ -51,11 +45,25 @@ struct MainComicsListView: View {
                 .padding()
             }
             .navigationTitle("Marvel Comics")
+            .overlay(content: {
+                // Loading view
+                if viewModel.isLoading {
+                    VStack{
+                        Spacer()
+                        ProgressView("Loading Comics...")
+                            .padding()
+                        Spacer()
+                    }.frame(maxWidth: .infinity)
+                    .background(Color.gray.opacity(0.5))
+                        
+                }
+            })
+            .disabled(viewModel.isLoading)
             .background(
                 Color.init(hex: "#e23636")!
             )
             .onAppear {
-                viewModel.fetchComics()
+                viewModel.fetchComics(offset: 0, limit: 20)
             }
             .onTapGesture {
                 hideKeyboard()
@@ -68,27 +76,3 @@ struct MainComicsListView: View {
     MainComicsListView()
 }
 
-struct ComicItemView: View {
-    let comic: Comic
-    
-    var body: some View {
-        VStack {
-            if let url = comic.thumbnail.url{
-                AsyncImage(url: url) { image in
-                    image.resizable()
-                        .aspectRatio(contentMode: .fit)
-                } placeholder: {
-                    ProgressView()
-                }
-                .frame(width: 100, height: 150)
-            }
-            Text(comic.title)
-                .font(.footnote)
-                .foregroundStyle(Color.black)
-                .lineLimit(2)
-        }
-        .padding()
-        .background(Color.init(hex: "#518cca")!)
-        .cornerRadius(8)
-    }
-}

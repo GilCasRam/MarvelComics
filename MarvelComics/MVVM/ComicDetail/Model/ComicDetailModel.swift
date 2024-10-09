@@ -7,7 +7,7 @@
 
 import Foundation
 
-// Respuesta de la API para obtener los detalles de un creador
+// API response to obtain creator details
 struct CreatorResponse: Codable {
     let data: CreatorDataWrapper
 }
@@ -16,7 +16,7 @@ struct CreatorDataWrapper: Codable {
     let results: [CreatorDetail]
 }
 
-// Detalles completos del creador, incluyendo la imagen
+// Full details of the creator, including image
 struct CreatorDetail: Codable, Identifiable {
     let id: Int
     let fullName: String
@@ -33,7 +33,7 @@ struct CreatorDetail: Codable, Identifiable {
     }
 }
 
-// Estructura para almacenar el resultado con name y thumbnail URL
+// Structure to store the result with name and thumbnail URL
 struct ComicVariant {
     let name: String?
     let thumbnailURL: String?

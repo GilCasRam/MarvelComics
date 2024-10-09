@@ -7,10 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7E57B7892CB4763200ABA23E /* MarvelComicsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E57B7882CB4763200ABA23E /* MarvelComicsApp.swift */; };
 		7E57B78B2CB4763200ABA23E /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E57B78A2CB4763200ABA23E /* Persistence.swift */; };
 		7E57B78E2CB4763200ABA23E /* MarvelComics.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7E57B78C2CB4763200ABA23E /* MarvelComics.xcdatamodeld */; };
-		7E57B7902CB4763200ABA23E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E57B78F2CB4763200ABA23E /* ContentView.swift */; };
 		7E57B7922CB4763400ABA23E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E57B7912CB4763400ABA23E /* Assets.xcassets */; };
 		7E57B7962CB4763400ABA23E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E57B7952CB4763400ABA23E /* Preview Assets.xcassets */; };
 		7E57B7A02CB4763400ABA23E /* MarvelComicsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E57B79F2CB4763400ABA23E /* MarvelComicsTests.swift */; };
@@ -26,6 +24,8 @@
 		7E57B7D32CB49A5500ABA23E /* DetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E57B7D22CB49A5500ABA23E /* DetailsViewModel.swift */; };
 		7E57B7D52CB5176200ABA23E /* VisualComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E57B7D42CB5176200ABA23E /* VisualComponents.swift */; };
 		7E57B7D92CB5283200ABA23E /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E57B7D82CB5283200ABA23E /* FavoritesView.swift */; };
+		7E57B7DB2CB5359500ABA23E /* MarvelComicsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E57B7DA2CB5359500ABA23E /* MarvelComicsApp.swift */; };
+		7E57B7DE2CB5ED1200ABA23E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7E57B7DD2CB5ED1200ABA23E /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,10 +47,8 @@
 
 /* Begin PBXFileReference section */
 		7E57B7852CB4763200ABA23E /* MarvelComics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarvelComics.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		7E57B7882CB4763200ABA23E /* MarvelComicsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarvelComicsApp.swift; sourceTree = "<group>"; };
 		7E57B78A2CB4763200ABA23E /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		7E57B78D2CB4763200ABA23E /* MarvelComics.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MarvelComics.xcdatamodel; sourceTree = "<group>"; };
-		7E57B78F2CB4763200ABA23E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7E57B7912CB4763400ABA23E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7E57B7932CB4763400ABA23E /* MarvelComics.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MarvelComics.entitlements; sourceTree = "<group>"; };
 		7E57B7952CB4763400ABA23E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -69,6 +67,8 @@
 		7E57B7D22CB49A5500ABA23E /* DetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewModel.swift; sourceTree = "<group>"; };
 		7E57B7D42CB5176200ABA23E /* VisualComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualComponents.swift; sourceTree = "<group>"; };
 		7E57B7D82CB5283200ABA23E /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
+		7E57B7DA2CB5359500ABA23E /* MarvelComicsApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarvelComicsApp.swift; sourceTree = "<group>"; };
+		7E57B7DD2CB5ED1200ABA23E /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,16 +119,14 @@
 		7E57B7872CB4763200ABA23E /* MarvelComics */ = {
 			isa = PBXGroup;
 			children = (
+				7E57B7DA2CB5359500ABA23E /* MarvelComicsApp.swift */,
+				7E57B7DC2CB5BE1D00ABA23E /* CoreData */,
 				7E57B7CE2CB4999500ABA23E /* Networking */,
 				7E57B7C32CB4897500ABA23E /* Utilities */,
 				7E57B7B82CB4788900ABA23E /* MVVM */,
-				7E57B7882CB4763200ABA23E /* MarvelComicsApp.swift */,
-				7E57B78A2CB4763200ABA23E /* Persistence.swift */,
-				7E57B78F2CB4763200ABA23E /* ContentView.swift */,
-				7E57B7912CB4763400ABA23E /* Assets.xcassets */,
 				7E57B7932CB4763400ABA23E /* MarvelComics.entitlements */,
-				7E57B78C2CB4763200ABA23E /* MarvelComics.xcdatamodeld */,
 				7E57B7942CB4763400ABA23E /* Preview Content */,
+				7E57B7DD2CB5ED1200ABA23E /* LaunchScreen.storyboard */,
 			);
 			path = MarvelComics;
 			sourceTree = "<group>";
@@ -161,9 +159,9 @@
 		7E57B7B82CB4788900ABA23E /* MVVM */ = {
 			isa = PBXGroup;
 			children = (
-				7E57B7D62CB5280200ABA23E /* Favorites */,
-				7E57B7C62CB48A4300ABA23E /* ComicDetail */,
 				7E57B7B92CB4789200ABA23E /* MainComics */,
+				7E57B7C62CB48A4300ABA23E /* ComicDetail */,
+				7E57B7D62CB5280200ABA23E /* Favorites */,
 			);
 			path = MVVM;
 			sourceTree = "<group>";
@@ -207,6 +205,7 @@
 			children = (
 				7E57B7C42CB4898A00ABA23E /* Extensions.swift */,
 				7E57B7D42CB5176200ABA23E /* VisualComponents.swift */,
+				7E57B7912CB4763400ABA23E /* Assets.xcassets */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -267,6 +266,15 @@
 				7E57B7D82CB5283200ABA23E /* FavoritesView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		7E57B7DC2CB5BE1D00ABA23E /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				7E57B78A2CB4763200ABA23E /* Persistence.swift */,
+				7E57B78C2CB4763200ABA23E /* MarvelComics.xcdatamodeld */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -373,6 +381,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E57B7DE2CB5ED1200ABA23E /* LaunchScreen.storyboard in Resources */,
 				7E57B7962CB4763400ABA23E /* Preview Assets.xcassets in Resources */,
 				7E57B7922CB4763400ABA23E /* Assets.xcassets in Resources */,
 			);
@@ -399,15 +408,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7E57B7892CB4763200ABA23E /* MarvelComicsApp.swift in Sources */,
 				7E57B78E2CB4763200ABA23E /* MarvelComics.xcdatamodeld in Sources */,
 				7E57B7D02CB499B500ABA23E /* MarvelServices.swift in Sources */,
 				7E57B7BF2CB478E200ABA23E /* ComicsListViewModel.swift in Sources */,
 				7E57B7D92CB5283200ABA23E /* FavoritesView.swift in Sources */,
 				7E57B7C52CB4898A00ABA23E /* Extensions.swift in Sources */,
 				7E57B7D52CB5176200ABA23E /* VisualComponents.swift in Sources */,
-				7E57B7902CB4763200ABA23E /* ContentView.swift in Sources */,
 				7E57B78B2CB4763200ABA23E /* Persistence.swift in Sources */,
+				7E57B7DB2CB5359500ABA23E /* MarvelComicsApp.swift in Sources */,
 				7E57B7C22CB47A7D00ABA23E /* ComicsListModel.swift in Sources */,
 				7E57B7BC2CB478B800ABA23E /* MainComicsListView.swift in Sources */,
 				7E57B7CC2CB4995F00ABA23E /* ComicDetailModel.swift in Sources */,
@@ -582,6 +590,7 @@
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -620,6 +629,7 @@
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
