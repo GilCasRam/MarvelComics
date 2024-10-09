@@ -14,6 +14,8 @@ struct FavoritesView: View {
     @State private var comicDelete: ComicEntity?
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
     @State private var confirmDelete: Bool = false
+    @State private var goToDetail: Bool = false
+    @State private var id: Int = Int()
     var body: some View {
         VStack{
             ScrollView {
@@ -37,6 +39,10 @@ struct FavoritesView: View {
                         .padding()
                         .background(Color.init(hex: "#518cca")!)
                         .cornerRadius(8)
+                        .onTapGesture{
+                            goToDetail.toggle()
+                            id = Int(comic.id)
+                        }
                         .overlay(alignment: .topTrailing, content: {
                             Button(action: {
                                 comicDelete = comic
@@ -51,12 +57,14 @@ struct FavoritesView: View {
                         })
                         .frame(width: 150, height: 300)
                         .alert(isPresented: $confirmDelete, content: {
-                            Alert(title: Text("You are about to delete this comic"), message: Text("Are you sure?"), primaryButton: .destructive(Text("Cancel")), secondaryButton: .default(Text("Accept"), action: {
+                            Alert(title: Text("You are about to delete this comic"), message: Text("Are you sure?"), primaryButton: .destructive(Text("Cancel")), secondaryButton: .default(Text("Aceptar"), action: {
                                 deleteComic(comicDelete ?? ComicEntity())
                                 loadComicsFromCoreData()}))
                         })
                     }
                 }
+                NavigationLink(isActive: $goToDetail, destination:{ ComicDetailView(comicId: id)}, label: {EmptyView()})
+                
             }
         }.padding(.horizontal)
         .navigationTitle("Favorites")

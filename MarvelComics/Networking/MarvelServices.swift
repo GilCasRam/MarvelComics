@@ -62,6 +62,45 @@ class MarvelService {
         return components?.url
     }
     
+    /// Fetches the details of a specific comic by its ID from the Marvel API.
+    ///
+    /// This function constructs a URL, makes a network request, and processes the response to fetch the details of a specific `Comic` object.
+    /// - Parameters:
+    ///   - comicId: The ID of the comic to fetch.
+    /// - Returns: A publisher that outputs the `Comic` object or an `Error` if the fetch fails.
+    func fetchComicDetail(comicId: Int) -> AnyPublisher<Comic, Error> {
+        guard let url = makeComicDetailURL(comicId: comicId) else {
+            return Fail(error: URLError(.badURL))
+                .eraseToAnyPublisher()
+        }
+        
+        return session.dataTaskPublisher(for: url)
+            .map(\.data)
+            .decode(type: MarvelResponse.self, decoder: JSONDecoder())
+            .map { $0.data.results.first! } 
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+    /// Creates the URL for fetching the details of a specific comic from the Marvel API.
+    /// This function constructs a URL using the base URL, the comic ID, and the necessary query parameters
+    /// for authentication with the Marvel API (API key, timestamp, and hash).
+    ///
+    /// - Parameter comicId: The ID of the comic for which details are being fetched.
+    /// - Returns: A `URL` object if the URL is successfully constructed, or `nil` if the URL is invalid.
+    private func makeComicDetailURL(comicId: Int) -> URL? {
+        var components = URLComponents(string: "\(baseUrl)/\(comicId)")
+        let timestamp = "\(Date().timeIntervalSince1970)"
+        let hash = generateMD5Hash(timestamp: timestamp)
+        
+        components?.queryItems = [
+            URLQueryItem(name: "apikey", value: publicKey),
+            URLQueryItem(name: "ts", value: timestamp),
+            URLQueryItem(name: "hash", value: hash)
+        ]
+        
+        return components?.url
+    }
+    
     /// Fetches the details of a creator from the Marvel API using the provided resource URI.
     ///
     /// This function takes a resource URI that points to a specific creator's details, constructs a URL,

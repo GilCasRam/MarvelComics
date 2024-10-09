@@ -12,11 +12,12 @@ import Combine
 class DetailsViewModel: ObservableObject {
     @Published var creatorDetail: CreatorDetail?
     @Published var variantDetail: [Comic] = []
+    @Published var comicDetail: Comic? = nil
     @Published var errorMessage: String = ""
     @Published var failure: Bool = false
     private let marvelService = MarvelService()
     private var cancellables = Set<AnyCancellable>()
-
+    
     /// Fetches the details of a creator from the Marvel API using a secure URL.
     ///
     /// This function replaces the "http:" protocol in the resource URI with "https:" to ensure a secure connection,
@@ -32,17 +33,44 @@ class DetailsViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 if case .failure(let error) = completion {
-                    self.failure = true 
+                    self.failure = true
                     self.errorMessage = "Error fetching creator details"
                     print("Error fetching creator details: \(error.localizedDescription)")
                 }
             }, receiveValue: { [weak self] creator in
                 DispatchQueue.main.async {
-                self?.creatorDetail = creator
+                    self?.creatorDetail = creator
                 }
             })
             .store(in: &cancellables)
     }
+    
+    
+    /// Fetches the details of the comic with the given ID.
+    /// This function triggers a network request to the Marvel API via `MarvelService`
+    /// to retrieve the details of the specified comic. It updates the published `comicDetail`
+    /// property if successful, or sets the `errorMessage` and `failure` properties if it fails.
+    ///
+    /// - Parameter comicId: The ID of the comic to fetch details for.
+    func fetchComicDetail(comicId: Int) {
+        marvelService.fetchComicDetail(comicId: comicId)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .failure(let error):
+                    self.errorMessage = error.localizedDescription
+                    self.failure = true
+                case .finished:
+                    break
+                }
+            }, receiveValue: { [self] comic in
+                self.comicDetail = comic
+                self.fetchAllVariants(variants: comic.variants ?? [], completion: { response in })
+                self.fetchCreatorDetail(resourceURI: comic.creators?.collectionURI ?? "")
+                print("-----------------\(comic)-------------------")
+            })
+            .store(in: &cancellables)  // Store the subscription to avoid memory leaks
+    }
+    
     
     /// Fetches the details of a comic variant from the Marvel API using a secure URL.
     ///
@@ -56,17 +84,17 @@ class DetailsViewModel: ObservableObject {
     ///
     func fetchVariantDetail(resourceURI: String, completion: @escaping (Result<ComicVariant, Error>) -> Void) {
         let securePath = resourceURI.replacingOccurrences(of: "http:", with: "https:")
-            marvelService.fetchVariantDetails(from: securePath)
-                .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { completion in
-                    if case .failure(let error) = completion {
-                        print("Error fetching variant details: \(error.localizedDescription)")
-                    }
-                }, receiveValue: { [weak self] variant in                    
-                    self?.variantDetail.append(contentsOf: variant)
-                })
-                .store(in: &cancellables)
-        }
+        marvelService.fetchVariantDetails(from: securePath)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                if case .failure(let error) = completion {
+                    print("Error fetching variant details: \(error.localizedDescription)")
+                }
+            }, receiveValue: { [weak self] variant in
+                self?.variantDetail.append(contentsOf: variant)
+            })
+            .store(in: &cancellables)
+    }
     
     /// Fetches all comic variants from an array of `ComicSummary` objects.
     ///

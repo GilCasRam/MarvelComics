@@ -19,7 +19,7 @@ struct MainComicsListView: View {
                     LazyVGrid(columns: viewModel.columns, spacing: 16) {
                         ForEach(viewModel.filteredComics.indices, id: \.self) { index in
                             let comic = viewModel.comics[index]
-                            NavigationLink(destination: ComicDetailView(comic: comic)) {
+                            NavigationLink(destination: ComicDetailView(comicId: comic.id)) {
                                 ComicItemView(comic: comic)                                    
                                     .onAppear{
                                         if comic == viewModel.comics.last {

@@ -13,19 +13,18 @@ struct ComicDetailView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @StateObject private var viewModel = DetailsViewModel()
     @State private var isFavorite: Bool = false
-    let comic: Comic
-    
+    let comicId: Int
     var body: some View {
         VStack{
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     // Summary of the comic
-                    Text(comic.title)
+                    Text(viewModel.comicDetail?.title ?? "N/A")
                         .font(.title)
                         .fontWeight(.bold)
                     HStack{
                         // Comic book cover
-                        if let url = comic.thumbnail.url {
+                        if let url = viewModel.comicDetail?.thumbnail.url {
                             AsyncImage(url: url) { image in
                                 image.resizable()
                                     .aspectRatio(contentMode: .fit)
@@ -35,7 +34,7 @@ struct ComicDetailView: View {
                                     .frame(height: 250)
                             }
                         }
-                        if let description = comic.description {
+                        if let description = viewModel.comicDetail?.description {
                             if description != "" {
                                 Text(description)
                                     .font(.body)
@@ -119,8 +118,16 @@ struct ComicDetailView: View {
             }
             // Button to add or remove from favorites
             Button(action: {
-                saveComicToCoreData(comic: comic)
-                isFavorite.toggle()
+                if isFavorite {
+                    removeFromFavorites()
+                    isFavorite = false
+                } else {
+                    if let comicDetail = viewModel.comicDetail {
+                        saveComicToCoreData(comic: comicDetail)
+                        isFavorite = true
+                    }
+                }
+                
                 // Here you could add the logic to persist the list of favorites
             }) {
                 Text(isFavorite ? "Remove from favorites" : "Add to favorites")
@@ -137,8 +144,7 @@ struct ComicDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .background(Color.init(hex: "#7c5fab")!)
         .onAppear{
-            viewModel.fetchCreatorDetail(resourceURI: comic.creators?.collectionURI ?? "")
-            viewModel.fetchAllVariants(variants: comic.variants ?? [], completion: { response in })
+            viewModel.fetchComicDetail(comicId: comicId)
             checkIfFavorite()
         }
         .alert(isPresented: $viewModel.failure, content: {
@@ -180,7 +186,7 @@ extension ComicDetailView {
     ///
     func checkIfFavorite() {
         let fetchRequest: NSFetchRequest<ComicEntity> = ComicEntity.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "id == %d", comic.id)
+        fetchRequest.predicate = NSPredicate(format: "id == %d", comicId)
         
         do {
             let results = try viewContext.fetch(fetchRequest)
@@ -197,7 +203,7 @@ extension ComicDetailView {
     ///
     func removeFromFavorites() {
         let fetchRequest: NSFetchRequest<ComicEntity> = ComicEntity.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "id == %d", comic.id)
+        fetchRequest.predicate = NSPredicate(format: "id == %d", comicId)
         
         do {
             let results = try viewContext.fetch(fetchRequest)
