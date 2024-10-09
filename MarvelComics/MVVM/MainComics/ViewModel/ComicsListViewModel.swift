@@ -27,15 +27,21 @@ class ComicsListViewModel: ObservableObject {
         setupSearchListener()
     }
     
-    // Función para cargar más cómics cuando llegamos al final de la lista
+    /// Loads more comics when reaching the end of the current list.
+    ///
+    /// This function fetches additional comics by calling `fetchComics()` with the current offset and limit.
+    /// It is typically used for pagination, to load more comics as the user scrolls through the list.
     func fetchMoreComics() {
         fetchComics(offset: currentOffset, limit: limit)
     }
-    
-    // Resetear los datos al cargar por primera vez
+
+    /// Resets and loads comics when the app is first launched or refreshed.
+    ///
+    /// This function resets the current offset to 0 and clears the comics list.
+    /// After clearing the list, it fetches the initial set of comics using the reset offset and the specified limit.
     func fetchInitialComics() {
         currentOffset = 0
-        comics.removeAll()  // Limpia la lista de cómics si se reinicia
+        comics.removeAll()
         fetchComics(offset: currentOffset, limit: limit)
     }
     
@@ -65,11 +71,9 @@ class ComicsListViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self?.comics.append(contentsOf: newComics)
                     self?.filteredComics = self?.comics ?? []
-                    // Actualizar el total de cómics disponibles (solo en la primera carga)
                     if self?.totalComics == 0 {
                         self?.totalComics = newComics.count
                     }
-                    // Incrementar el offset para la próxima página
                     if newComics.count > 0 {
                         self?.currentOffset += newComics.count
                     }

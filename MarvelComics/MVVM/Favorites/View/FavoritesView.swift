@@ -51,7 +51,7 @@ struct FavoritesView: View {
                         })
                         .frame(width: 150, height: 300)
                         .alert(isPresented: $confirmDelete, content: {
-                            Alert(title: Text("You are about to delete this comic"), message: Text("Are you sure?"), primaryButton: .destructive(Text("Cancel")), secondaryButton: .default(Text("Aceptar"), action: {
+                            Alert(title: Text("You are about to delete this comic"), message: Text("Are you sure?"), primaryButton: .destructive(Text("Cancel")), secondaryButton: .default(Text("Accept"), action: {
                                 deleteComic(comicDelete ?? ComicEntity())
                                 loadComicsFromCoreData()}))
                         })

@@ -51,14 +51,12 @@ class MarvelService {
         var components = URLComponents(string: baseUrl)
         let timestamp = "\(Date().timeIntervalSince1970)"
         let hash = generateMD5Hash(timestamp: timestamp)
-        
-        // Agregar los parámetros de paginación (offset y limit)
         components?.queryItems = [
             URLQueryItem(name: "apikey", value: publicKey),
             URLQueryItem(name: "ts", value: timestamp),
             URLQueryItem(name: "hash", value: hash),
-            URLQueryItem(name: "offset", value: "\(offset)"),  // Desplazamiento
-            URLQueryItem(name: "limit", value: "\(limit)")     // Límite de resultados por página
+            URLQueryItem(name: "offset", value: "\(offset)"),
+            URLQueryItem(name: "limit", value: "\(limit)")  
         ]
         
         return components?.url
