@@ -13,7 +13,7 @@ struct MarvelComicsApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainComicsListView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
